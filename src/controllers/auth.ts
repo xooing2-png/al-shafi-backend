@@ -188,7 +188,7 @@ export async function register(req: Request, res: Response) {
 
       const accessToken = generateToken({
         userId,
-        role: roleVal,
+        role: roleVal ?? 'patient',
         email: loginEmail,
       });
       const refreshToken = generateRefreshToken(userId);
