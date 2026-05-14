@@ -116,7 +116,8 @@ export async function getClinics(req: Request, res: Response) {
     }
   } catch (error) {
     console.error('Get clinics error:', error);
-    res.status(500).json({ error: 'Failed to fetch clinics' });
+    const message = error instanceof Error ? error.message : String(error);
+    res.status(500).json({ error: 'Failed to fetch clinics', detail: message });
   }
 }
 
