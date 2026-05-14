@@ -45,10 +45,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Health check
+// TRIGGER-DEPLOY-TEST
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'ok', 
-    codeVersion: 'v4-health',
+    codeVersion: 'v5-test',
     timestamp: new Date().toISOString() 
   });
 });
