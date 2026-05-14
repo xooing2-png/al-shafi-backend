@@ -49,6 +49,40 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Diagnostic endpoint
+app.get('/api/diag', async (req, res) => {
+  try {
+    const connection = await pool.getConnection();
+    try {
+      // Check if clinics table exists
+      const [tables] = await connection.execute(
+        `SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE()`,
+      );
+      const tableNames = (tables as { TABLE_NAME: string }[]).map((t) => t.TABLE_NAME);
+      
+      // Check if users table has data
+      const [userCount] = await connection.execute('SELECT COUNT(*) as c FROM users');
+      const usersCount = Number((userCount as { c: number }[])[0]?.c ?? 0);
+      
+      // Check if clinics table has data
+      const [clinicCount] = await connection.execute('SELECT COUNT(*) as c FROM clinics');
+      const clinicsCount = Number((clinicCount as { c: number }[])[0]?.c ?? 0);
+      
+      res.json({
+        tables: tableNames,
+        usersCount,
+        clinicsCount,
+        status: 'ok',
+      });
+    } finally {
+      connection.release();
+    }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    res.status(500).json({ error: 'Diagnostic failed', detail: message });
+  }
+});
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
