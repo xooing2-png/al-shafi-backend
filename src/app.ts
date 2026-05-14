@@ -90,9 +90,15 @@ async function startServer() {
       process.exit(1);
     }
 
-    // Run migrations to ensure schema is up to date
-    console.log('Running database migrations...');
-    await runMigrations();
+    // Run migrations to ensure schema is up to date (non-fatal)
+    try {
+      console.log('Running database migrations...');
+      await runMigrations();
+      console.log('✓ Database migrations completed');
+    } catch (migrateErr) {
+      console.warn('⚠ Migration warning (server continuing):', migrateErr);
+      // Don't crash - server can still run with existing schema
+    }
 
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`🚀 Server running on http://localhost:${PORT} (all interfaces)`);
