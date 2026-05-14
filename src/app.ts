@@ -46,7 +46,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // Health check
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  res.json({ 
+    status: 'ok', 
+    codeVersion: 'v4-health',
+    timestamp: new Date().toISOString() 
+  });
 });
 
 // Debug endpoint - check if code is updated
