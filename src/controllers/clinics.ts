@@ -106,7 +106,7 @@ export async function getClinics(req: Request, res: Response) {
       }
 
       query += ` ORDER BY updated_at DESC LIMIT ?, ?`;
-      params.push(parseInt(skip as string, 10) || 0, parseInt(limit as string, 10) || 20);
+      params.push(String(parseInt(skip as string, 10) || 0), String(parseInt(limit as string, 10) || 20));
 
       const [clinics] = await connection.execute(query, params as any);
       const rows = clinics as Record<string, unknown>[];
