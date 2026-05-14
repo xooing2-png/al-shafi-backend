@@ -49,6 +49,15 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// Debug endpoint - check if code is updated
+app.get('/debug', (req, res) => {
+  res.json({ 
+    codeVersion: 'v3', 
+    time: new Date().toISOString(),
+    message: 'This endpoint was added to test if code is updated' 
+  });
+});
+
 // Diagnostic endpoint
 app.get('/api/diag', async (req, res) => {
   try {
