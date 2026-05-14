@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { testConnection } from '@/config/database';
+import { runMigrations } from '@/scripts/migrate';
 
 import authRoutes from '@/routes/auth';
 import userRoutes from '@/routes/users';
@@ -85,6 +86,10 @@ async function startServer() {
       console.error('Cannot start server without database connection');
       process.exit(1);
     }
+
+    // Run migrations to ensure schema is up to date
+    console.log('Running database migrations...');
+    await runMigrations();
 
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`🚀 Server running on http://localhost:${PORT} (all interfaces)`);
