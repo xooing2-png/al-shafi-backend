@@ -1,7 +1,7 @@
 {
   "name": "al-shafi-backend",
   "version": "1.0.0",
-  "description": "Backend API for Al-Shafi Healthcare Application",
+  "description": "Backend API for Al-Shafi Healthcare Application - updated",
   "main": "dist/app.js",
   "scripts": {
     "dev": "tsx watch src/app.ts",
