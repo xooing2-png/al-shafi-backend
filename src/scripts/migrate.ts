@@ -39,7 +39,7 @@ function getMysqlErrorCode(error: unknown): number | undefined {
   return typeof errno === 'number' ? errno : undefined;
 }
 
-async function runMigrations() {
+export async function runMigrations() {
   console.log('Running migrations...');
   const connection = await mysql.createConnection(migrationDatabaseConfig);
   let applied = 0;
@@ -73,12 +73,14 @@ async function runMigrations() {
   }
 }
 
-runMigrations()
-  .then(() => {
-    console.log('✓ Migration script done');
-    process.exit(0);
-  })
-  .catch((error) => {
-    console.error('⚠ Migration script warning:', error);
-    process.exit(0);
-  });
+if (require.main === module) {
+  runMigrations()
+    .then(() => {
+      console.log('✓ Migration script done');
+      process.exit(0);
+    })
+    .catch((error) => {
+      console.error('⚠ Migration script warning:', error);
+      process.exit(0);
+    });
+}
